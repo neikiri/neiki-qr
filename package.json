@@ -1,0 +1,41 @@
+{
+  "name": "neiki-qr",
+  "version": "1.0.0",
+  "description": "Lightweight, dependency-free CDN-ready QR Code Generator & Scanner Web Component with dozens of QR content types, live camera scanning, and i18n support",
+  "keywords": [
+    "qr-code",
+    "qr-code-generator",
+    "qr-code-scanner",
+    "barcode",
+    "barcode-scanner",
+    "web-components",
+    "custom-elements",
+    "vanilla-js",
+    "i18n"
+  ],
+  "scripts": {
+    "test": "node --check src/neiki-qr.js",
+    "build": "python3 minify.py"
+  },
+  "main": "dist/neiki-qr.min.js",
+  "exports": {
+    ".": "./dist/neiki-qr.min.js",
+    "./style": "./dist/neiki-qr.min.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "style": "dist/neiki-qr.min.css",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neikiri/neiki-qr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neikiri/neiki-qr/issues"
+  },
+  "unpkg": "dist/neiki-qr.min.js",
+  "jsdelivr": "dist/neiki-qr.min.js",
+  "homepage": "https://github.com/neikiri/neiki-qr#readme",
+  "author": "Jindřich Stoklasa <jindrichstoklasa1@gmail.com>",
+  "license": "MIT"
+}

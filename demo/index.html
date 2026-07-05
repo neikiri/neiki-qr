@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neiki's QR — Demo</title>
+<script src="../src/neiki-qr.js"></script>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0 0 120px;
+    background: #f7f7f9;
+    color: #1f2328;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #16181d; color: #f2f3f5; }
+  }
+  header {
+    position: relative;
+    padding: 48px 24px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-github {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: inherit;
+    opacity: 0.75;
+    transition: opacity 0.15s ease;
+  }
+  .header-github:hover,
+  .header-github:focus-visible {
+    opacity: 1;
+  }
+  .header-github svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+  .header-logo {
+    height: 56px;
+    width: auto;
+  }
+  header p {
+    opacity: 0.75;
+    margin: 0;
+    max-width: 560px;
+  }
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  section {
+    margin: 48px 0;
+  }
+  section h2 {
+    font-size: 1.15rem;
+    border-bottom: 1px solid rgba(127,127,127,0.25);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+  section > p.lead {
+    opacity: 0.75;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-size: 0.92rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: rgba(127,127,127,0.06);
+    border: 1px solid rgba(127,127,127,0.15);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card > span.label {
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+  pre {
+    background: rgba(127,127,127,0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+  }
+  button.demo-btn {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(127,127,127,0.3);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  button.demo-btn.is-active {
+    border-color: #2563eb;
+    color: #2563eb;
+  }
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  #log {
+    background: rgba(127,127,127,0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.8rem;
+    max-height: 160px;
+    overflow-y: auto;
+    font-family: ui-monospace, monospace;
+  }
+  @media (max-width: 560px) {
+    .header-github { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="header-github" href="https://github.com/neikiri/neiki-qr" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.15-.02-2.09-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+  </a>
+  <img src="../assets/img/logo.svg" class="header-logo" alt="Neiki's QR">
+  <p>A lightweight, CDN-ready QR Code Generator &amp; Scanner Web Component — one tag, dozens of QR content types, live camera scanning, i18n, and light/dark themes. No framework required.</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>Basic usage</h2>
+    <p class="lead">Switch between <b>Generate</b> and <b>Scan</b> with the tabs, pick a QR content type, fill in the fields, and download the result as PNG or SVG.</p>
+    <div class="card">
+      <neiki-qr id="main-qr" data-mode="generate" type="text" ecc="M" size="240"></neiki-qr>
+    </div>
+    <pre>&lt;neiki-qr id="qr" data-mode="generate"&gt;&lt;/neiki-qr&gt;
+
+qr.setType('wifi');
+qr.setFields({ ssid: 'HomeNet', password: 'secret123', encryption: 'wpa' });</pre>
+  </section>
+
+  <section>
+    <h2>QR content types</h2>
+    <p class="lead">Text, URL, Wi-Fi, email, phone, SMS, WhatsApp, contact card (vCard), calendar event, location, SEPA payment, Czech QR payment (SPD), and Bitcoin — switch instantly with <code>setType()</code>.</p>
+    <div class="btn-row" id="type-buttons"></div>
+    <div class="card">
+      <neiki-qr id="type-qr" data-mode="generate"></neiki-qr>
+    </div>
+  </section>
+
+  <section>
+    <h2>Scan mode</h2>
+    <p class="lead">Uses the browser's native <code>BarcodeDetector</code> API (Chrome, Edge, Opera) for live camera scanning and image upload — no extra libraries loaded. Unsupported browsers show a friendly fallback message.</p>
+    <div class="card">
+      <neiki-qr id="scan-qr" data-mode="scan"></neiki-qr>
+    </div>
+  </section>
+
+  <section>
+    <h2>Themes</h2>
+    <p class="lead">Each instance resolves its own theme independently — <code>light</code>, <code>dark</code>, or <code>auto</code> (follows the OS).</p>
+    <div class="grid">
+      <div class="card">
+        <span class="label">light</span>
+        <neiki-qr id="theme-light-qr" theme="light" type="url" size="160"></neiki-qr>
+      </div>
+      <div class="card">
+        <span class="label">dark</span>
+        <neiki-qr id="theme-dark-qr" theme="dark" type="url" size="160"></neiki-qr>
+      </div>
+      <div class="card">
+        <span class="label">auto (follows OS)</span>
+        <neiki-qr id="theme-auto-qr" theme="auto" type="url" size="160"></neiki-qr>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Internationalization (i18n)</h2>
+    <p class="lead">Built-in translations for English, Czech, German, Spanish, French, Polish, Slovak and Ukrainian — switch with <code>setLang()</code> or the <code>lang</code> attribute. Add your own with <code>addTranslations()</code>.</p>
+    <div class="btn-row" id="lang-buttons">
+      <button class="demo-btn" data-lang="en">English</button>
+      <button class="demo-btn" data-lang="cs">Čeština</button>
+      <button class="demo-btn" data-lang="de">Deutsch</button>
+      <button class="demo-btn" data-lang="es">Español</button>
+      <button class="demo-btn" data-lang="fr">Français</button>
+      <button class="demo-btn" data-lang="pl">Polski</button>
+      <button class="demo-btn" data-lang="sk">Slovenčina</button>
+      <button class="demo-btn" data-lang="uk">Українська</button>
+    </div>
+    <div class="card">
+      <neiki-qr id="lang-qr" data-mode="generate" type="wifi"></neiki-qr>
+    </div>
+    <pre>qr.setLang('cs');
+
+qr.addTranslations('en', {
+  toolbar: { copy: 'Copy to clipboard' }
+});</pre>
+  </section>
+
+  <section>
+    <h2>JavaScript API &amp; events</h2>
+    <p class="lead">Listen for <code>neiki-qr:change</code> as the user edits fields, or <code>neiki-qr:scan</code> when a code is detected (cancelable — call <code>preventDefault()</code> to handle it yourself instead of the built-in history log).</p>
+    <div class="card">
+      <neiki-qr id="api-qr" data-mode="generate" type="url"></neiki-qr>
+      <div class="btn-row" style="margin-top:8px; margin-bottom:0;">
+        <button class="demo-btn" data-action="download-png">download PNG</button>
+        <button class="demo-btn" data-action="download-svg">download SVG</button>
+        <button class="demo-btn" data-action="get-value">getValue()</button>
+      </div>
+    </div>
+    <h3>Event log</h3>
+    <div id="log"></div>
+  </section>
+
+  <section>
+    <h2>CDN-style usage</h2>
+    <pre>&lt;script src="https://cdn.neikiri.dev/neiki-qr/neiki-qr.min.js"&gt;&lt;/script&gt;
+
+&lt;neiki-qr id="qr" data-mode="generate" type="url"&gt;&lt;/neiki-qr&gt;
+&lt;script&gt;
+  document.getElementById('qr').setFields({ url: 'https://neikiri.dev' });
+&lt;/script&gt;</pre>
+  </section>
+
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var mainQr = document.getElementById('main-qr');
+    mainQr.setFields({ text: "Welcome to Neiki's QR Generator 🎉" });
+
+    var typeQr = document.getElementById('type-qr');
+    var types = [
+      ['text', { text: "Welcome to Neiki's QR Generator 🎉" }],
+      ['url', { url: 'https://github.com/neikiri/neiki-qr' }],
+      ['wifi', { ssid: 'HomeNet', password: 'secret123', encryption: 'wpa' }],
+      ['email', { to: 'hello@example.com', subject: 'Hi!', body: 'Nice to meet you.' }],
+      ['tel', { number: '+420123456789' }],
+      ['sms', { number: '+420123456789', message: 'On my way!' }],
+      ['whatsapp', { number: '+420123456789', message: 'Hello!' }],
+      ['vcard', { firstName: 'Jan', lastName: 'Novák', phone: '+420123456789', email: 'jan@example.com', org: 'Neiki' }],
+      ['event', { eventTitle: 'Team meetup', location: 'Prague', start: '2026-09-01T18:00' }],
+      ['geo', { lat: '50.0755', lon: '14.4378' }],
+      ['sepa', { name: 'Jan Novak', iban: 'DE89370400440532013000', amount: '25.00', currency: 'EUR' }],
+      ['czqr', { account: 'CZ5855000000001265098001', amount: '150.00', variableSymbol: '2026001' }],
+      ['bitcoin', { address_btc: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', amount: '0.001' }]
+    ];
+    var btnRow = document.getElementById('type-buttons');
+    types.forEach(function (entry, i) {
+      var btn = document.createElement('button');
+      btn.className = 'demo-btn' + (i === 0 ? ' is-active' : '');
+      btn.textContent = entry[0];
+      btn.addEventListener('click', function () {
+        typeQr.setType(entry[0]);
+        typeQr.setFields(entry[1]);
+        btnRow.querySelectorAll('button').forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+      });
+      btnRow.appendChild(btn);
+    });
+    typeQr.setType(types[0][0]);
+    typeQr.setFields(types[0][1]);
+
+    ['theme-light-qr', 'theme-dark-qr', 'theme-auto-qr'].forEach(function (id) {
+      document.getElementById(id).setFields({ url: 'https://github.com/neikiri/neiki-qr' });
+    });
+
+    var langQr = document.getElementById('lang-qr');
+    langQr.setFields({ ssid: 'HomeNet', password: 'secret123', encryption: 'wpa' });
+    document.querySelectorAll('#lang-buttons [data-lang]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        langQr.setLang(btn.getAttribute('data-lang'));
+        document.querySelectorAll('#lang-buttons [data-lang]').forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+      });
+    });
+    document.querySelector('#lang-buttons [data-lang="en"]').classList.add('is-active');
+
+    var apiQr = document.getElementById('api-qr');
+    apiQr.setFields({ url: 'https://neikiri.dev' });
+    var log = document.getElementById('log');
+    function logLine(text) {
+      var line = document.createElement('div');
+      line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + text;
+      log.prepend(line);
+    }
+    ['ready', 'change', 'render', 'error', 'scan', 'scan-start', 'scan-stop'].forEach(function (name) {
+      apiQr.addEventListener('neiki-qr:' + name, function () { logLine(name); });
+    });
+    document.querySelectorAll('[data-action]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var action = button.getAttribute('data-action');
+        if (action === 'download-png') apiQr.download('neiki-qr-demo', 'png');
+        else if (action === 'download-svg') apiQr.download('neiki-qr-demo', 'svg');
+        else if (action === 'get-value') logLine('value: ' + apiQr.getValue());
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
